@@ -20,6 +20,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
     double fontSize = screenHeight * 0.022;
     double labelPaddingBottom = screenHeight * 0.015;
     double indicatorPaddingTop = screenHeight * 0.015;
+    double menuIconPadding = screenWidth * 0.05;
 
     return DefaultTabController(
       length: 2,
@@ -35,33 +36,39 @@ class _MapViewScreenState extends State<MapViewScreen> {
           leading: GestureDetector(
             onTap: () => _scaffoldKey.currentState?.openDrawer(),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(25, 12, 4, 12),
+              padding: EdgeInsets.fromLTRB(
+                  menuIconPadding,
+                  screenHeight * 0.015,
+                  screenWidth * 0.01,
+                  screenHeight * 0.015),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildMenuLine(25),
-                  const SizedBox(height: 5),
-                  _buildMenuLine(15),
-                  const SizedBox(height: 5),
-                  _buildMenuLine(20),
+                  _buildMenuLine(screenWidth * 0.06),
+                  SizedBox(height: screenHeight * 0.006),
+                  _buildMenuLine(screenWidth * 0.04),
+                  SizedBox(height: screenHeight * 0.006),
+                  _buildMenuLine(screenWidth * 0.05),
                 ],
               ),
             ),
           ),
           actions: [_buildPopupMenu()],
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(65),
+            preferredSize: Size.fromHeight(screenHeight * 0.08),
             child: Padding(
-              padding: const EdgeInsets.only(top: 10),
+              padding: EdgeInsets.only(top: screenHeight * 0.01),
               child: TabBar(
                 labelColor: Colors.black,
                 unselectedLabelColor: Colors.grey,
-                labelStyle: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+                labelStyle:
+                    TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
                 labelPadding: EdgeInsets.only(bottom: labelPaddingBottom),
                 indicatorPadding: EdgeInsets.only(top: indicatorPaddingTop),
                 indicator: UnderlineTabIndicator(
-                  borderSide: const BorderSide(width: 4, color: Colors.black),
+                  borderSide: BorderSide(
+                      width: screenWidth * 0.004, color: Colors.black),
                   insets: EdgeInsets.symmetric(horizontal: screenWidth * -0.08),
                 ),
                 tabs: const [
@@ -91,7 +98,8 @@ class _MapViewScreenState extends State<MapViewScreen> {
   /// Helper method to build the status filter dropdown
   Widget _buildPopupMenu() {
     return Theme(
-      data: Theme.of(context).copyWith(popupMenuTheme: const PopupMenuThemeData(color: Colors.white)),
+      data: Theme.of(context).copyWith(
+          popupMenuTheme: const PopupMenuThemeData(color: Colors.white)),
       child: PopupMenuButton<String>(
         onSelected: (String value) {
           setState(() {
@@ -104,13 +112,18 @@ class _MapViewScreenState extends State<MapViewScreen> {
           PopupMenuItem(value: "Pending", child: Text("Pending")),
           PopupMenuItem(value: "Ongoing", child: Text("Ongoing")),
         ],
-        offset: const Offset(0, 30),
-        child: const Padding(
-          padding: EdgeInsets.only(right: 10),
+        offset: Offset(0, MediaQuery.sizeOf(context).width * 0.05),
+        child: Padding(
+          padding:
+              EdgeInsets.only(right: MediaQuery.sizeOf(context).width * 0.02),
           child: Row(
             children: [
-              Text("All Status", style: TextStyle(color: Colors.black, fontSize: 16)),
-              SizedBox(width: 5),
+              Text("All Status",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: MediaQuery.sizeOf(context).width * 0.035,
+                  )),
+              SizedBox(width: MediaQuery.sizeOf(context).width * 0.02),
               Icon(Icons.arrow_drop_down, color: Colors.black),
             ],
           ),
@@ -119,10 +132,3 @@ class _MapViewScreenState extends State<MapViewScreen> {
     );
   }
 }
-
-
-
-
-
-
-
