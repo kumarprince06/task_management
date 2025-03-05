@@ -4,14 +4,25 @@ import 'package:task_management/presentation/widgets/custom_drawer.dart';
 import 'package:task_management/presentation/widgets/map_widgets.dart';
 
 class MapViewScreen extends StatefulWidget {
-  const MapViewScreen({super.key});
+  final int initialTabIndex;
+
+  const MapViewScreen({super.key, this.initialTabIndex = 0});
 
   @override
   State<MapViewScreen> createState() => _MapViewScreenState();
 }
 
-class _MapViewScreenState extends State<MapViewScreen> {
+class _MapViewScreenState extends State<MapViewScreen>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(
+        length: 2, vsync: this, initialIndex: widget.initialTabIndex);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +45,11 @@ class _MapViewScreenState extends State<MapViewScreen> {
           ),
           backgroundColor: Colors.white,
           leading: GestureDetector(
-            onTap: () => _scaffoldKey.currentState?.openDrawer(),
+            onTap: () {
+              if (_scaffoldKey.currentState != null) {
+                _scaffoldKey.currentState!.openDrawer();
+              }
+            },
             child: Padding(
               padding: EdgeInsets.fromLTRB(
                   menuIconPadding,
@@ -60,6 +75,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
             child: Padding(
               padding: EdgeInsets.only(top: screenHeight * 0.01),
               child: TabBar(
+                controller: _tabController,
                 labelColor: Colors.black,
                 unselectedLabelColor: Colors.grey,
                 labelStyle:
@@ -68,8 +84,8 @@ class _MapViewScreenState extends State<MapViewScreen> {
                 indicatorPadding: EdgeInsets.only(top: indicatorPaddingTop),
                 indicator: UnderlineTabIndicator(
                   borderSide: BorderSide(
-                      width: screenWidth * 0.004, color: Colors.black),
-                  insets: EdgeInsets.symmetric(horizontal: screenWidth * -0.08),
+                      width: screenWidth * 0.011, color: Colors.black),
+                  insets: EdgeInsets.symmetric(horizontal: screenWidth * -0.09),
                 ),
                 tabs: const [
                   Tab(text: "Map View"),
@@ -80,8 +96,11 @@ class _MapViewScreenState extends State<MapViewScreen> {
           ),
         ),
         drawer: const CustomDrawer(),
-        body: const TabBarView(
-          children: [
+        body: TabBarView(
+          controller: _tabController,
+          physics:
+              const NeverScrollableScrollPhysics(), // Disables swipe gestures
+          children: const [
             MapScreen(),
             CardWidgets(),
           ],
@@ -112,7 +131,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
           PopupMenuItem(value: "Pending", child: Text("Pending")),
           PopupMenuItem(value: "Ongoing", child: Text("Ongoing")),
         ],
-        offset: Offset(0, MediaQuery.sizeOf(context).width * 0.05),
+        offset: Offset(0, MediaQuery.sizeOf(context).width * 0.06),
         child: Padding(
           padding:
               EdgeInsets.only(right: MediaQuery.sizeOf(context).width * 0.02),

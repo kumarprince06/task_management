@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:task_management/presentation/screens/map_view_screen.dart';
+import 'package:task_management/presentation/widgets/card_widgets.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -23,6 +25,10 @@ class CustomDrawer extends StatelessWidget {
             title: const Text('Map View'),
             onTap: () {
               Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const MapViewScreen(initialTabIndex: 0)),
+              );
             },
           ),
           ListTile(
@@ -30,6 +36,10 @@ class CustomDrawer extends StatelessWidget {
             title: const Text('List View'),
             onTap: () {
               Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const MapViewScreen(initialTabIndex: 1)),
+              );
             },
           ),
         ],
